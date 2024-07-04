@@ -44,5 +44,6 @@ impl CPU{
   
   fn add(&mut self){
     self.a = self.a + self.b;
+    self.ip = self.ip + 1;
   }
 }
