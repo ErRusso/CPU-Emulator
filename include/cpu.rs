@@ -13,7 +13,7 @@ impl CPU{
   }
   
   fn print_status(&mut self){
-    println!("a: {}, b: {}, ip: {}", self.a, self.b, self.ip);
+    println!("cpu: a: {}, b: {}, ip: {}", self.a, self.b, self.ip);
   }
 
   fn mov_into_register(&mut self, memory:&mut MEMORY){
@@ -25,6 +25,17 @@ impl CPU{
     self.ip = self.ip + 3;
   }
 
+  fn add(&mut self){
+    self.a = self.a + self.b;
+    self.ip = self.ip + 1;
+  }
+
+  fn mov_into_memory(&mut self, memory:&mut MEMORY){
+    let address = memory.get(self.ip + 1); 
+    memory.load(address,self.a);
+    self.ip = self.ip + 2;
+  }
+  
   fn mov_next_instruction(&mut self){
     self.ip = self.ip + 1;
   }
@@ -38,12 +49,9 @@ impl CPU{
       0x0 => self.mov_next_instruction(),
       0x1 => self.mov_into_register(memory),
       0x2 => self.add(),
+      0x3 => self.mov_into_memory(memory),
       _ => panic!("Invalid Instruction")
     }
   }
   
-  fn add(&mut self){
-    self.a = self.a + self.b;
-    self.ip = self.ip + 1;
-  }
 }
