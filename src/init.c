@@ -1,20 +1,32 @@
 #include "include/cpu.c"
 #include "include/memory.c"
-#include <printf.h>
+#include <stdio.h>
+#include <stdlib.h>
 int main(int argc, char const *argv[])
 {
+  if (argc < 2)
+  {
+    printf("usage: %s <filename>\n", argv[0]);
+    return 1;
+  }
+
   memory m;
+  memory_init(&m);
   cpu c;
   cpu_init(&c);
 
-  int code[256] = {
-      1,
-  };
-  for (int i = 0; i < 256; i++)
+  FILE *f = fopen(argv[1], "r");
+  if (f == NULL)
   {
-    mem_put_code(&m, i, code[i]);
+    printf("failed to open file: %s\n", argv[1]);
+    return 1;
+  }
+  int16_t code[256];
+  while (fscanf(f, "%hd", code) == 1)
+  {
   }
 
+  fclose(f);
   cpu_run(&c, &m);
 
   return 0;
