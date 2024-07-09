@@ -1,5 +1,3 @@
-use std::mem;
-
 include!("./include/cpu.rs");
 include!("./include/memory.rs");
 fn main() {
